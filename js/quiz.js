@@ -1,4 +1,5 @@
 import { gojuonData } from './data.js';
+import { shuffleArray } from './utils.js';
 import { createMultipleChoiceEngine } from './quiz-engine.js';
 
 // 測驗設定狀態
@@ -139,6 +140,9 @@ export function startQuiz() {
     if (quizConfig.mode === 'romaji-to-kana') {
         pool = pool.map(item => ({ q: item.a, a: item.q, type: item.type }));
     }
+
+    // 打亂題庫
+    pool = shuffleArray(pool);
 
     // 決定題數
     const countSelect = document.getElementById('question-count').value;
