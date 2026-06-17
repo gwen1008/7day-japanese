@@ -27,11 +27,11 @@ function switchQuizMode(mode) {
 function switchTab(tabId) {
     allTabs.forEach(id => {
         document.getElementById(`tab-${id}`).classList.add('hidden-tab');
-        document.getElementById(`nav-${id}`).className = 'px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors';
+        document.getElementById(`nav-${id}`).className = 'flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors';
     });
 
     document.getElementById(`tab-${tabId}`).classList.remove('hidden-tab');
-    document.getElementById(`nav-${tabId}`).className = 'px-4 py-2 rounded-full font-medium text-sm text-white bg-blue-500 shadow-md transition-colors';
+    document.getElementById(`nav-${tabId}`).className = 'flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-white bg-blue-500 shadow-md transition-colors';
 
     if (tabId === 'write') {
         renderGuideCanvas();

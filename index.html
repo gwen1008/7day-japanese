@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
-<body class="text-gray-800">
+<body class="text-gray-800 overflow-x-hidden">
 
     <header class="bg-white shadow-md mb-8">
         <div class="max-w-4xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between flex-wrap gap-4">
@@ -17,13 +17,13 @@
                 <p class="text-gray-500 text-sm">一週內能學多少是多少</p>
             </div>
 
-            <!-- 導覽列 -->
-            <nav class="flex space-x-3">
-                <button id="nav-table" class="px-4 py-2 rounded-full font-medium text-sm text-white bg-blue-500 shadow-md transition-colors" onclick="switchTab('table')">五十音表</button>
-                <button id="nav-write" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('write')">字帖練習</button>
-                <button id="nav-quiz" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('quiz')">測驗練習</button>
-                <button id="nav-phrases" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('phrases')">常用短句</button>
-                <button id="nav-ai" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('ai')">AI 小幫手</button>
+            <!-- 導覽列：手機上允許橫向滑動，避免按鈕被擠成圓形 -->
+            <nav class="flex gap-2 overflow-x-auto max-w-full -mx-1 px-1 pb-1">
+                <button id="nav-table" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-white bg-blue-500 shadow-md transition-colors" onclick="switchTab('table')">五十音表</button>
+                <button id="nav-write" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('write')">字帖練習</button>
+                <button id="nav-quiz" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('quiz')">測驗練習</button>
+                <button id="nav-phrases" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('phrases')">常用短句</button>
+                <button id="nav-ai" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('ai')">AI 小幫手</button>
             </nav>
         </div>
     </header>
@@ -420,8 +420,8 @@
                     <p>Key 只會存在<strong>你目前瀏覽器</strong>的本機儲存空間 (localStorage)，不會寫入程式碼、不會上傳到任何伺服器。換瀏覽器或清除瀏覽資料需要重新輸入。</p>
                 </div>
                 <div class="flex gap-2">
-                    <input id="ai-key-input" type="password" placeholder="貼上你的 Groq API Key" class="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="saveApiKey()">儲存</button>
+                    <input id="ai-key-input" type="password" placeholder="貼上你的 Groq API Key" class="flex-1 min-w-0 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                    <button class="flex-shrink-0 bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="saveApiKey()">儲存</button>
                 </div>
             </div>
 
@@ -429,8 +429,8 @@
             <div id="ai-chat-area" class="hidden">
                 <div id="ai-messages" class="flex flex-col border border-gray-200 rounded-lg p-4 mb-3 overflow-y-auto" style="height: 420px;"></div>
                 <div class="flex gap-2">
-                    <input id="ai-input" type="text" placeholder="用中文或日文輸入問題..." class="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="sendAiMessage()">送出</button>
+                    <input id="ai-input" type="text" placeholder="用中文或日文輸入問題..." class="flex-1 min-w-0 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                    <button class="flex-shrink-0 bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="sendAiMessage()">送出</button>
                 </div>
                 <button class="text-xs text-gray-400 hover:text-gray-600 mt-2" onclick="clearApiKey()">清除已儲存的 API Key</button>
             </div>
