@@ -7,7 +7,7 @@ const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
 
 http.createServer((req, res) => {
     const urlPath = decodeURIComponent(req.url.split('?')[0]);
-    const filePath = path.join(root, urlPath === '/' ? '/code_artifact.html' : urlPath);
+    const filePath = path.join(root, urlPath === '/' ? '/index.html' : urlPath);
     fs.readFile(filePath, (err, data) => {
         if (err) {
             res.writeHead(404);
