@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>速成日文急救手冊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-md mb-8">
+        <div class="max-w-4xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between flex-wrap gap-4">
+            <div class="text-left">
+                <h1 class="text-2xl md:text-3xl font-bold text-blue-600">速成日文急救手冊</h1>
+                <p class="text-gray-500 text-sm">一週內能學多少是多少</p>
+            </div>
+
+            <!-- 導覽列 -->
+            <nav class="flex space-x-3">
+                <button id="nav-table" class="px-4 py-2 rounded-full font-medium text-sm text-white bg-blue-500 shadow-md transition-colors" onclick="switchTab('table')">五十音表</button>
+                <button id="nav-write" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('write')">字帖練習</button>
+                <button id="nav-quiz" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('quiz')">測驗練習</button>
+                <button id="nav-phrases" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('phrases')">常用短句</button>
+                <button id="nav-ai" class="px-4 py-2 rounded-full font-medium text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors" onclick="switchTab('ai')">AI 小幫手</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8 pt-0">
+        <!-- 五十音表區塊 -->
+        <main id="tab-table" class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-700">清音表</h2>
+                <div class="text-sm text-gray-500">
+                    <span class="inline-block mr-3"><span class="font-bold text-black text-lg">あ</span> 平假名</span>
+                    <span class="inline-block mr-3"><span class="font-bold text-blue-500">ア</span> 片假名</span>
+                    <span class="inline-block"><span class="font-mono text-green-600">a</span> 羅馬拼音</span>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse text-center">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-600">
+                            <th class="p-2 border">段\行</th>
+                            <th class="p-2 border">あ (a)</th>
+                            <th class="p-2 border">か (k)</th>
+                            <th class="p-2 border">さ (s)</th>
+                            <th class="p-2 border">た (t)</th>
+                            <th class="p-2 border">な (n)</th>
+                            <th class="p-2 border">は (h)</th>
+                            <th class="p-2 border">ま (m)</th>
+                            <th class="p-2 border">や (y)</th>
+                            <th class="p-2 border">ら (r)</th>
+                            <th class="p-2 border">わ (w)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gojuon-table-body">
+                        <!-- 由 JavaScript 動態生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- 字帖練習區塊 -->
+        <main id="tab-write" class="bg-white rounded-xl shadow-lg p-6 hidden-tab">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- 左側：文字選擇 -->
+                <div class="w-full md:w-2/5">
+                    <div class="flex gap-3 mb-4">
+                        <button class="option-btn selected border-2 border-blue-500 bg-blue-500 text-white rounded-lg px-4 py-2 font-medium flex-1" data-write-type="hiragana" onclick="setWriteType(this, 'hiragana')">平假名</button>
+                        <button class="option-btn border-2 border-gray-300 rounded-lg px-4 py-2 font-medium flex-1" data-write-type="katakana" onclick="setWriteType(this, 'katakana')">片假名</button>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2" id="write-kana-grid">
+                        <!-- 由 JavaScript 生成 -->
+                    </div>
+                </div>
+
+                <!-- 右側：練習區 -->
+                <div class="w-full md:w-3/5 flex flex-col items-center">
+                    <div class="flex items-center justify-between w-full max-w-sm mb-3">
+                        <div class="flex gap-6">
+                            <div>
+                                <span class="text-xs text-gray-500">羅馬拼音</span>
+                                <div id="write-romaji" class="text-2xl font-mono font-bold text-green-600">a</div>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500">漢字來源</span>
+                                <div id="write-kanji-origin" class="text-2xl font-bold text-gray-700">安</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1">
+                            <label class="flex items-center gap-1 text-sm text-gray-600 cursor-pointer">
+                                <input type="checkbox" id="auto-play" checked>
+                                自動播放
+                            </label>
+                            <button id="play-audio-btn" class="text-gray-600 hover:text-blue-500" onclick="playCurrentAudio()" title="播放發音">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 範例詞彙：幫助記憶這個假名實際怎麼用 -->
+                    <div id="example-word-box" class="flex items-center justify-between w-full max-w-sm mb-3 border border-gray-200 rounded-lg p-3">
+                        <div>
+                            <span class="text-xs text-gray-500">範例詞彙</span>
+                            <div id="example-word" class="text-xl font-bold text-gray-800">あさ</div>
+                            <div id="example-romaji" class="text-xs font-mono text-green-600">asa</div>
+                            <div id="example-zh" class="text-sm text-gray-400">早上</div>
+                        </div>
+                        <button class="text-blue-500 hover:text-blue-700 text-xl flex-shrink-0" onclick="playExampleAudio()" title="播放詞彙發音">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                    </div>
+
+                    <label class="flex items-center gap-1 text-sm text-gray-600 cursor-pointer self-start mb-2">
+                        <input type="checkbox" id="show-guide-char" checked onchange="renderGuideCanvas()">
+                        顯示字帖
+                    </label>
+
+                    <div class="relative border-2 border-gray-300 rounded-lg bg-white" style="width:300px; height:300px;">
+                        <canvas id="guide-canvas" width="300" height="300" class="absolute top-0 left-0"></canvas>
+                        <canvas id="draw-canvas" width="300" height="300" class="absolute top-0 left-0 cursor-crosshair touch-none"></canvas>
+                    </div>
+
+                    <div class="flex items-center gap-2 w-full max-w-sm mt-3 text-sm text-gray-600">
+                        <i class="fas fa-pen"></i>
+                        <input type="range" id="pen-size" min="2" max="14" value="6" class="flex-1">
+                    </div>
+
+                    <div class="flex items-center justify-center gap-4 mt-5">
+                        <button class="bg-amber-500 hover:bg-amber-600 text-white w-11 h-11 rounded-full shadow" onclick="prevWriteChar()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-5 rounded-full shadow" onclick="clearCanvas()">
+                            清除 <i class="fas fa-eraser ml-1"></i>
+                        </button>
+                        <button class="bg-amber-500 hover:bg-amber-600 text-white w-11 h-11 rounded-full shadow" onclick="nextWriteChar()">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 測驗設定區塊 -->
+        <main id="tab-quiz" class="bg-white rounded-xl shadow-lg p-6 hidden-tab">
+            <!-- 測驗類型切換 -->
+            <div class="flex gap-3 mb-6 flex-wrap justify-center">
+                <button id="quiz-mode-btn-kana" class="option-btn selected border-2 border-blue-500 bg-blue-500 text-white rounded-lg px-4 py-2 font-medium" onclick="switchQuizMode('kana')">假名測驗</button>
+                <button id="quiz-mode-btn-vocab" class="option-btn border-2 border-gray-300 text-gray-700 rounded-lg px-4 py-2 font-medium" onclick="switchQuizMode('vocab')">詞彙測驗</button>
+                <button id="quiz-mode-btn-sentence" class="option-btn border-2 border-gray-300 text-gray-700 rounded-lg px-4 py-2 font-medium" onclick="switchQuizMode('sentence')">句子排序 <span class="text-xs text-gray-400">(進階)</span></button>
+            </div>
+
+            <!-- 假名測驗模式 -->
+            <div id="quiz-mode-kana">
+            <div id="quiz-setup">
+                <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">設定測驗條件</h2>
+
+                <div class="space-y-6">
+                    <!-- 字體選擇 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">1. 選擇文字類型</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="option-btn border-2 border-gray-300 rounded-lg px-4 py-2 font-medium" data-type="hiragana" onclick="toggleOption(this, 'type')">平假名 (あいう)</button>
+                            <button class="option-btn border-2 border-gray-300 rounded-lg px-4 py-2 font-medium" data-type="katakana" onclick="toggleOption(this, 'type')">片假名 (アイウ)</button>
+                        </div>
+                    </div>
+
+                    <!-- 題型選擇 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">2. 選擇題型</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="option-btn selected border-2 border-blue-500 bg-blue-500 text-white rounded-lg px-4 py-2 font-medium" data-mode="kana-to-romaji" onclick="setSingleOption(this, 'mode')">看假名 → 選拼音</button>
+                            <button class="option-btn border-2 border-gray-300 rounded-lg px-4 py-2 font-medium" data-mode="romaji-to-kana" onclick="setSingleOption(this, 'mode')">看拼音 → 選假名</button>
+                        </div>
+                    </div>
+
+                    <!-- 範圍選擇 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2 flex justify-between items-center">
+                            <span>3. 選擇範圍 (行)</span>
+                            <div>
+                                <button class="text-sm text-blue-500 hover:text-blue-700 mr-3" onclick="selectAllRows()">全選</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700" onclick="clearAllRows()">全不選</button>
+                            </div>
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="row-selection">
+                            <!-- 由 JavaScript 生成選項 -->
+                        </div>
+                    </div>
+
+                    <!-- 題數選擇 -->
+                     <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">4. 測驗題數</h3>
+                        <select id="question-count" class="border-2 border-gray-300 rounded-lg px-4 py-2 font-medium bg-white focus:outline-none focus:border-blue-500">
+                            <option value="10">10 題</option>
+                            <option value="20" selected>20 題</option>
+                            <option value="50">50 題</option>
+                            <option value="all">範圍內全考</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center pt-4">
+                        <button id="start-quiz-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105" onclick="startQuiz()">
+                            開始測驗 <i class="fas fa-play ml-2"></i>
+                        </button>
+                        <p id="setup-error" class="text-red-500 mt-2 hidden text-sm">請至少選擇一種文字類型和一個範圍！</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 測驗進行區 -->
+            <div id="quiz-area" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <button class="text-gray-500 hover:text-gray-700" onclick="quitQuiz()">
+                        <i class="fas fa-arrow-left mr-1"></i> 返回設定
+                    </button>
+                    <div class="text-lg font-bold text-gray-700">
+                        進度：<span id="current-q-num">1</span> / <span id="total-q-num">20</span>
+                    </div>
+                    <div class="text-lg font-bold text-blue-600">
+                        得分：<span id="score-display">0</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center py-8">
+                    <div id="question-display" class="text-8xl font-bold mb-12 text-gray-800" style="min-height: 120px; display: flex; align-items: center;">
+                        <!-- 題目顯示在這裡 -->
+                    </div>
+
+                    <div id="options-container" class="grid grid-cols-2 gap-4 w-full max-w-md">
+                        <!-- 選項按鈕由 JS 生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 測驗結果區 -->
+            <div id="quiz-result" class="hidden text-center py-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">測驗結束！</h2>
+                <div class="text-6xl mb-6">
+                    <i id="result-icon" class="fas fa-trophy text-yellow-500"></i>
+                </div>
+                <p class="text-2xl mb-2">你的得分是</p>
+                <p class="text-5xl font-bold text-blue-600 mb-8"><span id="final-score">0</span> / <span id="final-total">0</span></p>
+
+                <div id="mistakes-container" class="mb-8 text-left max-w-md mx-auto hidden">
+                    <h3 class="text-lg font-bold text-red-500 mb-3 border-b border-red-200 pb-2">答錯的題目：</h3>
+                    <ul id="mistakes-list" class="space-y-2">
+                        <!-- 錯誤題目列表 -->
+                    </ul>
+                </div>
+
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg" onclick="quitQuiz()">
+                    再次測驗 <i class="fas fa-redo ml-2"></i>
+                </button>
+            </div>
+            </div>
+
+            <!-- 詞彙測驗模式 -->
+            <div id="quiz-mode-vocab" class="hidden">
+                <div id="vocab-setup">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">設定詞彙測驗</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">1. 選擇題型</h3>
+                            <div class="flex flex-wrap gap-3" id="vocab-mode-options">
+                                <button class="option-btn selected border-2 border-blue-500 bg-blue-500 text-white rounded-lg px-4 py-2 font-medium" data-vocab-mode="word-to-zh" onclick="setSingleOption(this, 'vocabMode')">看假名 → 選中文</button>
+                                <button class="option-btn border-2 border-gray-300 rounded-lg px-4 py-2 font-medium" data-vocab-mode="romaji-to-word" onclick="setSingleOption(this, 'vocabMode')">看羅馬拼音 → 選假名</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">2. 測驗題數</h3>
+                            <select id="vocab-question-count" class="border-2 border-gray-300 rounded-lg px-4 py-2 font-medium bg-white focus:outline-none focus:border-blue-500">
+                                <option value="10">10 題</option>
+                                <option value="20" selected>20 題</option>
+                                <option value="all">全部 (46 題)</option>
+                            </select>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105" onclick="startVocabQuiz()">
+                                開始測驗 <i class="fas fa-play ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vocab-quiz-area" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <button class="text-gray-500 hover:text-gray-700" onclick="quitVocabQuiz()">
+                            <i class="fas fa-arrow-left mr-1"></i> 返回設定
+                        </button>
+                        <div class="text-lg font-bold text-gray-700">
+                            進度：<span id="vocab-current-q-num">1</span> / <span id="vocab-total-q-num">20</span>
+                        </div>
+                        <div class="text-lg font-bold text-blue-600">
+                            得分：<span id="vocab-score-display">0</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center py-8">
+                        <div id="vocab-question-display" class="text-5xl font-bold mb-12 text-gray-800" style="min-height: 120px; display: flex; align-items: center;"></div>
+                        <div id="vocab-options-container" class="grid grid-cols-2 gap-4 w-full max-w-md"></div>
+                    </div>
+                </div>
+
+                <div id="vocab-quiz-result" class="hidden text-center py-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">測驗結束！</h2>
+                    <div class="text-6xl mb-6">
+                        <i id="vocab-result-icon" class="fas fa-trophy text-yellow-500"></i>
+                    </div>
+                    <p class="text-2xl mb-2">你的得分是</p>
+                    <p class="text-5xl font-bold text-blue-600 mb-8"><span id="vocab-final-score">0</span> / <span id="vocab-final-total">0</span></p>
+
+                    <div id="vocab-mistakes-container" class="mb-8 text-left max-w-md mx-auto hidden">
+                        <h3 class="text-lg font-bold text-red-500 mb-3 border-b border-red-200 pb-2">答錯的題目：</h3>
+                        <ul id="vocab-mistakes-list" class="space-y-2"></ul>
+                    </div>
+
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg" onclick="quitVocabQuiz()">
+                        再次測驗 <i class="fas fa-redo ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 句子排序模式 (進階) -->
+            <div id="quiz-mode-sentence" class="hidden">
+                <div id="sentence-setup">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2 text-center">句子排序（進階）</h2>
+                    <p class="text-center text-gray-500 text-sm mb-6">看中文意思，把日文詞彙依正確順序排好</p>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">測驗題數</h3>
+                            <select id="sentence-question-count" class="border-2 border-gray-300 rounded-lg px-4 py-2 font-medium bg-white focus:outline-none focus:border-blue-500">
+                                <option value="5">5 題</option>
+                                <option value="10" selected>10 題</option>
+                                <option value="all">全部</option>
+                            </select>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105" onclick="startSentenceQuiz()">
+                                開始測驗 <i class="fas fa-play ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sentence-area" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <button class="text-gray-500 hover:text-gray-700" onclick="quitSentenceQuiz()">
+                            <i class="fas fa-arrow-left mr-1"></i> 返回設定
+                        </button>
+                        <div class="text-lg font-bold text-gray-700">
+                            進度：<span id="sentence-current-q-num">1</span> / <span id="sentence-total-q-num">10</span>
+                        </div>
+                        <div class="text-lg font-bold text-blue-600">
+                            得分：<span id="sentence-score-display">0</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <span class="text-sm text-gray-500">請排出這句話：</span>
+                        <div id="sentence-prompt-zh" class="text-2xl font-bold text-gray-800 mt-1"></div>
+                    </div>
+
+                    <div class="min-h-[64px] border-2 border-dashed border-blue-300 rounded-lg p-3 mb-4 flex flex-wrap gap-2" id="sentence-answer-area"></div>
+
+                    <div class="flex flex-wrap gap-2 justify-center mb-6" id="sentence-token-pool"></div>
+
+                    <div class="text-center">
+                        <button id="sentence-check-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow" onclick="checkSentenceAnswer()">
+                            檢查答案
+                        </button>
+                        <p id="sentence-feedback" class="mt-3 font-bold"></p>
+                    </div>
+                </div>
+
+                <div id="sentence-result" class="hidden text-center py-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">測驗結束！</h2>
+                    <div class="text-6xl mb-6">
+                        <i id="sentence-result-icon" class="fas fa-trophy text-yellow-500"></i>
+                    </div>
+                    <p class="text-2xl mb-2">你的得分是</p>
+                    <p class="text-5xl font-bold text-blue-600 mb-8"><span id="sentence-final-score">0</span> / <span id="sentence-final-total">0</span></p>
+
+                    <div id="sentence-mistakes-container" class="mb-8 text-left max-w-md mx-auto hidden">
+                        <h3 class="text-lg font-bold text-red-500 mb-3 border-b border-red-200 pb-2">答錯的題目：</h3>
+                        <ul id="sentence-mistakes-list" class="space-y-2"></ul>
+                    </div>
+
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg" onclick="quitSentenceQuiz()">
+                        再次測驗 <i class="fas fa-redo ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 常用短句區塊 -->
+        <main id="tab-phrases" class="bg-white rounded-xl shadow-lg p-6 hidden-tab">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">生活常用短句</h2>
+            <div class="flex gap-3 mb-6 flex-wrap" id="phrase-category-tabs">
+                <!-- 由 JavaScript 生成分類按鈕 -->
+            </div>
+            <div class="space-y-3" id="phrase-list">
+                <!-- 由 JavaScript 生成短句列表 -->
+            </div>
+        </main>
+
+        <!-- AI 小幫手區塊 -->
+        <main id="tab-ai" class="bg-white rounded-xl shadow-lg p-6 hidden-tab">
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">AI 日文小幫手</h2>
+            <p class="text-sm text-gray-500 mb-4">只回答日文學習相關的問題：日文對話、文法解釋、翻譯協助等。</p>
+
+            <!-- API Key 設定區 -->
+            <div id="ai-key-setup">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-600 mb-4">
+                    <p class="mb-1">需要你自己的 Groq API Key 才能使用（<a href="https://console.groq.com/keys" target="_blank" rel="noopener" class="text-blue-600 underline">前往 Groq Console 免費取得</a>，不需要信用卡）。</p>
+                    <p>Key 只會存在<strong>你目前瀏覽器</strong>的本機儲存空間 (localStorage)，不會寫入程式碼、不會上傳到任何伺服器。換瀏覽器或清除瀏覽資料需要重新輸入。</p>
+                </div>
+                <div class="flex gap-2">
+                    <input id="ai-key-input" type="password" placeholder="貼上你的 Groq API Key" class="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="saveApiKey()">儲存</button>
+                </div>
+            </div>
+
+            <!-- 聊天區 -->
+            <div id="ai-chat-area" class="hidden">
+                <div id="ai-messages" class="flex flex-col border border-gray-200 rounded-lg p-4 mb-3 overflow-y-auto" style="height: 420px;"></div>
+                <div class="flex gap-2">
+                    <input id="ai-input" type="text" placeholder="用中文或日文輸入問題..." class="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 rounded-lg" onclick="sendAiMessage()">送出</button>
+                </div>
+                <button class="text-xs text-gray-400 hover:text-gray-600 mt-2" onclick="clearApiKey()">清除已儲存的 API Key</button>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f3f4f6;
+}
+
+/* 自訂選項按鈕樣式 */
+.option-btn {
+    transition: all 0.2s ease-in-out;
+}
+.option-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.option-btn.selected {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* 隱藏/顯示輔助類別 */
+.hidden-tab {
+    display: none;
+}
+
+/* 表格樣式微調 */
+.kana-cell {
+    transition: background-color 0.2s;
+}
+.kana-cell:hover {
+    background-color: #eff6ff;
+}
+
+/* 常用短句的注音 (furigana)，標示在對應漢字正上方 */
+ruby rt {
+    font-size: 0.55em;
+    color: #3b82f6;
+    font-weight: 500;
+}
