@@ -50,6 +50,7 @@ export function startVocabQuiz() {
         : {
             q: v.romaji,
             a: v.word,
+            hint: v.zh, // 看拼音模式額外標出中文意思，幫助辨識是哪個詞
             qClass: 'text-5xl font-mono text-green-600 mb-12',
             pool: allWords,
             optionClass: 'bg-white border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-gray-800 py-4 px-6 rounded-xl shadow-sm transition-all text-center font-bold text-2xl'

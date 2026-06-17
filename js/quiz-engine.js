@@ -34,8 +34,18 @@ export function createMultipleChoiceEngine(ids) {
         el(ids.currentQNum).textContent = index + 1;
 
         const qDisplay = el(ids.questionDisplay);
-        qDisplay.textContent = q.q;
         qDisplay.className = q.qClass;
+        if (q.hint) {
+            // 自帶 flex-col 包裝，避免受外層 flex-row 容器影響而排成橫排
+            qDisplay.innerHTML = `
+                <div class="flex flex-col items-center gap-2">
+                    <div>${q.q}</div>
+                    <div class="text-xl text-gray-400 font-sans">${q.hint}</div>
+                </div>
+            `;
+        } else {
+            qDisplay.textContent = q.q;
+        }
 
         let distractors = q.pool.filter(x => x !== q.a);
         distractors = shuffleArray(distractors.slice());
